@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Gravity Forms - Brazil Auto Fill Streets
-Plugin URI: http://github.com/ludioao/gf-autofill-brazilian
+Plugin URI: http://github.com/ludioao/gf-autofill-brazilian-states
 Description: Auto populate Address City and state from entered ZIP code
 Version: 1.0
 Author: Lúdio Oliveira
@@ -149,6 +149,13 @@ if (class_exists("GFForms")) {
 
                 //Only add Javescript if Auto populate is checked AND
                 if( $field["auto_city_state_autofill"] && ( $field["defaultCountry"]=="Brasil" || $field["defaultCountry"]=="Brazil") ){
+
+
+                    // 1 == Rua
+                    // 2 == Bairro
+                    // 3 == Cidade
+                    // 4 == Estado
+
                     //$field["inputs"][5]["isHidden"] //The country code field
                     $script = '(function($){' .
                         '$( "#input_'. $form['id'] .'_'.$field['id'].'_3_container" ).hide();'.
@@ -162,7 +169,7 @@ if (class_exists("GFForms")) {
                         //End getting country code if set
                         '$( "#input_'. $form['id'] .'_'.$field['id'].'_5" ).on("keyup paste", function() {'.
                         'var el = $(this);'.
-                        'if (el.val().length >= 5 && zipValid[br].test(el.val()) ) {'.
+                        'if (el.val().length >= 8 && zipValid["br"].test(el.val()) ) {'.
                         '$.ajax({'.
                         'url: "//api.postmon.com.br/v1/cep/" + el.val(),'. //http://zip.getziptastic.com/v2/
                         'cache: false,'.
@@ -170,17 +177,19 @@ if (class_exists("GFForms")) {
                         'type: "GET",'.
                         //'data: el.val(),'.
                         'success: function(result, success) {'.
-                        'places = result["places"][0];;'.
-                        '$( "#input_'. $form['id'] .'_'.$field['id'].'_3_container" ).slideDown();'.
-                        '$( "#input_'. $form['id'] .'_'.$field['id'].'_4_container" ).slideDown();'.
-                        '$( "#message_'. $form['id'] .'_'.$field['id'].'_5_container" ).hide();'.
-                        '$( "#input_'. $form['id'] .'_'.$field['id'].'_3" ).val(places["logradouro"]);'.
-                        '$( "#input_'. $form['id'] .'_'.$field['id'].'_4" ).val(places["estado"]);'.
+                                'places = result;'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_3_container" ).slideDown();'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_4_container" ).slideDown();'.
+                                '$( "#message_'. $form['id'] .'_'.$field['id'].'_5_container" ).hide();'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_1" ).val(places["logradouro"]);'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_2" ).val(places["bairro"]);'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_3" ).val(places["cidade"]);'.
+                                '$( "#input_'. $form['id'] .'_'.$field['id'].'_4" ).val(places["estado"]);'.
 
-                        '}'.
-                        '});'.
-                        '}'.
-                        '});'.
+                                '}'.
+                                '});'.
+                                '}'.
+                                '});'.
                         '})(jQuery);';
 
 
