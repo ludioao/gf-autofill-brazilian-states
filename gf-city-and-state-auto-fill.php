@@ -19,7 +19,7 @@ if (class_exists("GFForms")) {
         protected $_min_gravityforms_version = "1.8";
         protected $_full_path = __FILE__;
         protected $_title = "Gravity Forms - City and State Auto-fill";
-        protected $_short_title = "Unafisco - BR City and State Auto-fill";
+        protected $_short_title = "GF - BR City and State Auto-fill";
         protected $_slug = "gf-city-and-state-auto-fill";
         protected $_path = "gf-city-and-state-auto-fill/gf-city-and-state-auto-fill.php";
 
